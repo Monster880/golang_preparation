@@ -15,8 +15,8 @@ func main() {
 		return a+b > b+a
 	})
 	fmt.Println(intSlice)
-	// res := strings.Join(intSlice, )
-	// fmt.Println(res)
+	//res := strings.Join(intSlice, "")
+	//fmt.Println(res)
 	str := ""
 	for i := 0; i < len(intSlice); i++ {
 		str += strconv.Itoa(intSlice[i])
