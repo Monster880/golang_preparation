@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -16,7 +15,7 @@ func chanDemo() {
 	var channels [10]chan int
 	for i := 0; i < 10; i++ {
 		channels[i] = make(chan int)
-		go worker(i, channels[i])
+		//go worker(i, channels[i])
 	}
 	for i := 0; i < 10; i++ {
 		channels[i] <- 'a' + i
