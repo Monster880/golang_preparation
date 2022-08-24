@@ -20,4 +20,5 @@ func main() {
 		{6, nil, &root},
 	}
 	fmt.Println(nodes)
+	//fmt.Println("%d", 2^B)
 }
