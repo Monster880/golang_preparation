@@ -1,11 +1,9 @@
 package main
 
-import "fmt"
-
-func main() {
-	var s = "abcabcbb"
-	fmt.Println(findLongestNoDuplicatedLength(s))
-}
+//func main() {
+//	var s = "abcabcbb"
+//	fmt.Println(findLongestNoDuplicatedLength(s))
+//}
 
 func findLongestNoDuplicatedLength(s string) int {
 	m := make(map[byte]bool, 0)

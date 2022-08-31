@@ -7,14 +7,14 @@ type ListNode struct {
 	next  *ListNode
 }
 
-func main() {
-	root := &ListNode{value: 0}
-	dummyNode := root
-	root.next = &ListNode{value: 1}
-	root = root.next
-	root.next = &ListNode{value: 2, next: nil}
-	reverseListNode(dummyNode)
-}
+//func main() {
+//	root := &ListNode{value: 0}
+//	dummyNode := root
+//	root.next = &ListNode{value: 1}
+//	root = root.next
+//	root.next = &ListNode{value: 2, next: nil}
+//	reverseListNode(dummyNode)
+//}
 
 func reverseListNode(root *ListNode) *ListNode {
 	dummyNode := root
