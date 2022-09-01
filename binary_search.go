@@ -1,13 +1,11 @@
 package main
 
-import "fmt"
-
-func main() {
-	arr := []int{1, 2, 3, 5, 6}
-	num := 6
-	index := binary_search(arr, num)
-	fmt.Println(index)
-}
+//func main() {
+//	arr := []int{1, 2, 3, 5, 6}
+//	num := 6
+//	index := binary_search(arr, num)
+//	fmt.Println(index)
+//}
 
 func binary_search(arr []int, num int) int {
 	left := 0
