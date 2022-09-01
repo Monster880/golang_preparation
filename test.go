@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -10,11 +9,11 @@ import (
 //比如 "20+10-5"，返回25
 //备注：没有括号，不考虑溢出
 
-func main() {
-	s := "20+10-5"
-	res := computeMathString(s)
-	fmt.Println(res)
-}
+//func main() {
+//	s := "20+10-5"
+//	res := computeMathString(s)
+//	fmt.Println(res)
+//}
 
 func computeMathString(s string) int64 {
 	str := make([]string, 0)
