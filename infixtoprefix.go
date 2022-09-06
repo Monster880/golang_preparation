@@ -1,11 +1,9 @@
 package main
 
-import "fmt"
-
-func main() {
-	fmt.Println("(3+4)*5-6")
-	fmt.Println(in2pre([]rune("(3+4)*5-6")))
-}
+//func main() {
+//	fmt.Println("(3+4)*5-6")
+//	fmt.Println(in2pre([]rune("(3+4)*5-6")))
+//}
 
 func priority(s string) int {
 	if s == "+" || s == "-" {
