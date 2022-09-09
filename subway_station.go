@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // 地铁站station,start起点,end终点
 // a,b,c,d
 type station struct {
@@ -12,18 +10,18 @@ type station struct {
 var stations []station
 var res12 [][]rune
 
-func main() {
-	station_a := &station{start_station: 'a', end_station: []rune{'b', 'c', 'd'}}
-	station_b := &station{start_station: 'b', end_station: []rune{'c', 'd'}}
-	station_c := &station{start_station: 'c', end_station: []rune{'d'}}
-	stations = make([]station, 0)
-	res12 = make([][]rune, 0)
-	stations = append(stations, *station_a)
-	stations = append(stations, *station_b)
-	stations = append(stations, *station_c)
-	dfs2(stations, []rune{}, 0, 'd')
-	fmt.Println(res12)
-}
+//func main() {
+//	station_a := &station{start_station: 'a', end_station: []rune{'b', 'c', 'd'}}
+//	station_b := &station{start_station: 'b', end_station: []rune{'c', 'd'}}
+//	station_c := &station{start_station: 'c', end_station: []rune{'d'}}
+//	stations = make([]station, 0)
+//	res12 = make([][]rune, 0)
+//	stations = append(stations, *station_a)
+//	stations = append(stations, *station_b)
+//	stations = append(stations, *station_c)
+//	dfs2(stations, []rune{}, 0, 'd')
+//	fmt.Println(res12)
+//}
 
 func dfs2(stations []station, temp []rune, index int, end_station rune) {
 	if len(temp) > 0 && end_station == 'd' {
