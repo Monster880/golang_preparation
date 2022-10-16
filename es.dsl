@@ -551,3 +551,162 @@ GET /movie/_search
     }
   }
 }
+
+#测试ik分词器
+GET _analyze?pretty
+{
+  "analyzer": "ik_smart",
+  "text": "中华人民共和国国歌"
+}
+
+#最大化分词
+GET _analyze?pretty
+{
+  "analyzer": "ik_max_word",
+  "text": "中华人民共和国国歌"
+}
+
+GET _analyze?pretty
+{
+  "analyzer": "standard",
+  "text": "中华人民共和国国歌"
+}
+
+#analyzer指定的是构建索引的分词
+#search_analyzer指定的是搜索关键字的分词
+
+#最佳方案：索引时max_word，查询时smart_word
+
+#定义门店的索引结构
+PUT /shop
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "id":{"type": "integer"},
+      "name":{"type": "text", "analyzer": "ik_max_word", "search_analyzer": "ik_smart"},
+      "tags":{"type": "text","analyzer": "whitespace", "fielddata": "true"},
+      "location":{"type": "geo_point"},
+      "remark_score":{"type":"double"},
+      "price_per_man":{"type": "integer"},
+      "category":{"type":"integer"},
+      "category_name":{"type": "keyword"},
+      "seller_remark_score":{"type": "double"},
+      "seller_disabled_flag":{"type": "integer"}
+    }
+  }
+}
+
+GET /shop/_search
+{
+  "query": {
+    "match": {
+      "name": "凯悦"
+    }
+  }
+}
+
+GET /shop/_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "花悦庭果木烤鸭"
+}
+
+#带上距离字段
+GET /shop/_search
+{
+  "query": {
+    "match": {"name": "凯悦"}
+  },
+  "_source": "*",
+  "script_fields": {
+    "distance":{
+      "script":{
+        "source":"haversin(lat,lon,doc['location'].lat, doc['location'].lon)",
+        "lang":"expression",
+        "params":{"lat":31.37, "lon":127.12}
+      }
+    }
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "location": {
+          "lat": 31.37,
+          "lon": 127.12
+        },
+        "order": "asc",
+        "unit": "km",
+        "distance_type": "arc"
+      }
+    }
+  ]
+}
+
+#使用function score解决排序模型
+GET /shop/_search
+{
+  "explain": true,
+  "_source": "*",
+  "script_fields": {
+    "distance":{
+      "script":{
+        "source":"haversin(lat,lon,doc['location'].lat, doc['location'].lon)",
+        "lang":"expression",
+        "params":{"lat":31.23916171, "lon":121.48789949}
+      }
+    }
+  },
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "must": [
+            {"match": {"name": {"query": "凯悦","boost": 0.1}}},
+            {"term": {
+              "seller_disabled_flag": 0
+            }}
+          ]
+        }
+      },
+      "functions": [
+        {
+          "gauss": {
+            "location": {
+              "origin": "31.23916171,121.48789949",
+              "scale": "100km",
+              "offset": "0km",
+              "decay": 0.5
+            }
+          },
+          "weight": 9
+        },
+        {
+          "field_value_factor": {
+            "field": "remark_score"
+          },
+          "weight": 0.2
+        },
+        {
+          "field_value_factor": {
+            "field": "seller_remark_score"
+          },
+          "weight": 0.2
+        }
+      ],
+      "score_mode": "sum",
+      "boost_mode": "sum"
+    }
+  },
+  "sort": [
+    {
+      "_score": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
